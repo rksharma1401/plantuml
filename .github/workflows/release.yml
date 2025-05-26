@@ -48,4 +48,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
-          path: target/   # For Maven; use build/libs/ for Gradle
+          path: eleng/net.sourceforge.plantuml.composite/target/   # For Maven; use build/libs/ for Gradle
