@@ -116,65 +116,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <inherited>false</inherited> <!-- only execute these in the parent -->
-                <configuration>
-                    <executable>git</executable>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>git-clone-gh-pages</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>
-                                <argument>clone</argument>
-                                <argument>-b</argument>
-                                <argument>gh-pages</argument>
-                                <argument>git@github.com:hallvard/plantuml.git</argument>
-                                <argument>${basedir}/target/gh-pages</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>git-add-gh-pages</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>
-                                <argument>-C</argument>
-                                <argument>${basedir}/target/gh-pages</argument>
-                                <argument>add</argument>
-                                <argument>--all</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>git-commit-gh-pages</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>
-                                <argument>-C</argument>
-                                <argument>${basedir}/target/gh-pages</argument>
-                                <argument>commit</argument>
-                                <argument>-m</argument>
-                                <argument>New release (${releaseVersion})</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+			</plugin> 
 		</plugins>
 	</build>
 
