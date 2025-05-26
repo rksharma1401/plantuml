@@ -3,7 +3,7 @@ name: Build and Release
 on:
   push:
     branches:
-      - '**'  # Triggers on version tags like v1.0.0
+      - '**'  # Runs when you push a tag like v1.2.3
 
 jobs:
   build-and-release:
@@ -19,11 +19,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Cache Maven packages
+      - name: Cache Maven Packages
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.m2/repository
+          path: ~/.m2/repository
           key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             maven-${{ runner.os }}-
@@ -31,22 +30,22 @@ jobs:
       - name: Build with Maven
         run: mvn clean install --batch-mode
 
-      # If your build process updates compositeArtifacts.xml and compositeContent.xml, skip the next step.
-      # If you need to update them manually, add a script or modify this step.
-      # - name: Update composite XMLs (example)
-      #   run: |
-      #     ./scripts/update-composite-xmls.sh
-
-      - name: Gather JARs and XMLs for release
+      - name: Gather all JARs and XMLs
         run: |
-          mkdir -p release-assets
-          find . -name "*.jar" -exec cp {} release-assets/ \;
-          cp releng/net.sourceforge.plantuml.composite/target/repository/compositeArtifacts.xml release-assets/ || true
-          cp releng/net.sourceforge.plantuml.composite/target/repository/compositeContent.xml release-assets/ || true
+          mkdir -p release-files
+          find . -type f -name "*.jar" -exec cp {} release-files/ \;
+          cp releng/net.sourceforge.plantuml.composite/target/repository/compositeArtifacts.xml release-files/ || true
+          cp releng/net.sourceforge.plantuml.composite/target/repository/compositeContent.xml release-files/ || true
+
+      - name: Create ZIP of artifacts
+        run: |
+          cd release-files
+          zip ../plantuml-release.zip *
+          cd ..
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: release-assets/*
+          files: plantuml-release.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
