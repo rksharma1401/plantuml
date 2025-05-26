@@ -43,17 +43,8 @@ jobs:
           cd release-files
           zip ../plantuml-release.zip *
           cd ..
-      - name: Upload plantuml-release.zip to GitHub Release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./plantuml-release.zip
-          asset_name: plantuml-release.zip
-          asset_content_type: application/zip
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
-          path: eleng/net.sourceforge.plantuml.composite/target/   # For Maven; use build/libs/ for Gradle
+          path: release-files/plantuml-release.zip   # For Maven; use build/libs/ for Gradle
