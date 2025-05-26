@@ -43,8 +43,8 @@ jobs:
           cd release-files
           zip ../plantuml-release.zip *
           cd ..
-      - name: Upload build artifacts
+      - name: Upload Release Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
-          path: release-files/plantuml-release.zip   # For Maven; use build/libs/ for Gradle
+            name: plantuml-release
+            path: plantuml-release.zip
