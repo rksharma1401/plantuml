@@ -159,3 +159,4 @@ Note that the version numbers of the plantuml.lib plugin are a bit special, sinc
 ## 1.1.13.8054
 - Includes EPL-ed version of plantuml.jar
 - Fix for [issue #13](https://github.com/hallvard/plantuml/issues/13) - recompute diagram on activate not just broughtOnTop
+- Create Release
