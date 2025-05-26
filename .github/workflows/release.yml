@@ -1,0 +1,49 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers on version tags like v1.0.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Find all JAR files
+        id: jars
+        run: |
+          find . -name "*.jar" > jars.txt
+
+      - name: Update compositeArtifacts.xml and compositeContent.xml
+        run: |
+          # Add your script here to update the XML files as needed
+          # Example (replace with your actual update process):
+          echo "<compositeArtifacts>Updated</compositeArtifacts>" > releng/net.sourceforge.plantuml.composite/compositeArtifacts.xml
+          echo "<compositeContent>Updated</compositeContent>" > releng/net.sourceforge.plantuml.composite/compositeContent.xml
+
+      - name: Prepare release assets
+        run: |
+          mkdir release-assets
+          while read jar; do cp "$jar" release-assets/; done < jars.txt
+          cp releng/net.sourceforge.plantuml.composite/compositeArtifacts.xml release-assets/
+          cp releng/net.sourceforge.plantuml.composite/compositeContent.xml release-assets/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-assets/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
