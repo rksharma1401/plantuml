@@ -44,9 +44,8 @@ jobs:
           zip ../plantuml-release.zip *
           cd ..
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
         with:
-          files: plantuml-release.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: build-artifacts
+          path: target/   # For Maven; use build/libs/ for Gradle
