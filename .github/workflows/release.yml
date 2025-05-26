@@ -28,7 +28,8 @@ jobs:
             maven-${{ runner.os }}-
 
       - name: Build with Maven
-        run: mvn clean install --batch-mode
+        run: mvn clean install --batch-mode 
+        working-directory: releng/net.sourceforge.plantuml.composite
 
       - name: Gather all JARs and XMLs
         run: |
